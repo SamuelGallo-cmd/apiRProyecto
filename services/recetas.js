@@ -1,44 +1,58 @@
 import { connection } from "./connection.js";
 
-const tablaRecetas = () => connection.table('recetas');
-
+const recipeTable = () => connection.table('recetas');
 
 export async function obtenerRecetaPorId(id) {
-    return await tablaRecetas().first().where({ id });
+    const receta = await recipeTable().first().where({ id });
+    return {
+        ...receta,
+        ingredientes: JSON.parse(receta.ingredientes),
+        pasos: JSON.parse(receta.pasos)
+    };
 }
 
 export async function obtenerTodasLasRecetas() {
-    return await tablaRecetas().select();
+    const recetas = await recipeTable().select();
+    return recetas.map(receta => ({
+        ...receta,
+        ingredientes: JSON.parse(receta.ingredientes),
+        pasos: JSON.parse(receta.pasos)
+    }));
 }
 
-
-
-export async function crearReceta({ nombre, descripcion, idUsuario }) {
+export async function crearReceta({ nombre, descripcion, ingredientes, pasos, usuario_id }) {
     const receta = {
         nombre,
         descripcion,
-        id_usuario: idUsuario,
+        ingredientes: JSON.stringify(ingredientes),
+        pasos: JSON.stringify(pasos),
+        id_usuario: usuario_id,
         creado_en: new Date().toISOString(),
     };
-    await tablaRecetas().insert(receta);
-    return receta;
+    const [id] = await recipeTable().insert(receta);
+    return obtenerRecetaPorId(id);
 }
 
-export async function actualizarReceta({ id, nombre, descripcion }) {
-    const receta = await tablaRecetas().first().where({ id });
+export async function actualizarReceta({ id, nombre, descripcion, ingredientes, pasos }) {
+    const receta = await obtenerRecetaPorId(id);
     if (!receta) {
         return null;
     }
-    const camposActualizados = { nombre, descripcion };
-    await tablaRecetas().update(camposActualizados).where({ id });
+    const camposActualizados = { 
+        nombre, 
+        descripcion,
+        ...(ingredientes && { ingredientes: JSON.stringify(ingredientes) }),
+        ...(pasos && { pasos: JSON.stringify(pasos) })
+    };
+    await recipeTable().update(camposActualizados).where({ id });
     return { ...receta, ...camposActualizados };
 }
 
 export async function eliminarReceta(id) {
-    const receta = await tablaRecetas().first().where({ id });
+    const receta = await obtenerRecetaPorId(id);
     if (!receta) {
         return null;
     }
-    await tablaRecetas().delete().where({ id });
+    await recipeTable().delete().where({ id });
     return receta;
 }

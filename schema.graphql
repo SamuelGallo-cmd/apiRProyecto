@@ -1,5 +1,6 @@
 type Query {
     usuario(id: ID!): Usuario
+    usuarios: [Usuario] 
     receta(id: ID!): Receta
     recetas(limit: Int): [Receta]
 }
@@ -15,16 +16,17 @@ type Mutation {
 
 type Usuario {
     id: ID!
-    nombre: String!
-    apellido: String
-    correo: String!
-    recetas: [Receta]
-    creado_en: String!
+    name: String!
+    last_name: String
+    email: String!
+    recetas: [Receta]  #  recetas asociadas a un usuario
+    created_at: String!
+    password: String
 }
 
 type Receta {
     id: ID!
-    titulo: String!
+    nombre: String!
     descripcion: String
     ingredientes: [String]!
     pasos: [String]!
@@ -33,20 +35,22 @@ type Receta {
 }
 
 input CrearUsuarioInput {
-    nombre: String!
-    apellido: String
-    correo: String!
+    name: String!
+    last_name: String
+    email: String!
+    password: String!
 }
 
 input ActualizarUsuarioInput {
     id: ID!
-    nombre: String
-    apellido: String
-    correo: String
+    name: String
+    last_name: String
+    email: String
+    password: String
 }
 
 input CrearRecetaInput {
-    titulo: String!
+    nombre: String!
     descripcion: String
     ingredientes: [String]!
     pasos: [String]!
@@ -55,11 +59,12 @@ input CrearRecetaInput {
 
 input ActualizarRecetaInput {
     id: ID!
-    titulo: String
+    nombre: String
     descripcion: String
     ingredientes: [String]
     pasos: [String]
 }
+
 type Subscription {
     nuevaReceta: Receta
 }
