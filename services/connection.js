@@ -1,9 +1,13 @@
-import knex from 'knex';
+import knex from "knex";
 
-export const connection = knex({
-    client: 'sqlite3',
-    connection: {
+export const connection=knex({
+    client:'better-sqlite3',
+    connection:{
         filename:'./database/db.sqlite3',
     },
-    useNullAsDefault: true
+    useNullAsDefault:true,
+});
+connection.on('query',({sql,bindings})=>{
+    const query=connection.raw(sql,bindings).toQuery();
+    console.log('[DB]--->',query);
 });

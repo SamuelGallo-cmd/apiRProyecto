@@ -47,5 +47,5 @@ export async function deleteUser(id) {
 }
 
 export async function getUserByEmail(email) {
-    return await userTable().first().where({ email }).select('id', 'name', 'last_name', 'email', 'created_at');
+    return await userTable().first().where({email});
 }
