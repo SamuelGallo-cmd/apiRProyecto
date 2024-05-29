@@ -15,7 +15,7 @@ await schema.createTable('usuarios', (table) => {
 });
 
 await schema.createTable('recetas', (table) => {
-    table.text('id').notNullable().primary();
+    table.increments('id').primary();
     table.text('nombre').notNullable();
     table.dateTime('descripcion').notNullable();
     table.text('ingredientes').nullable();

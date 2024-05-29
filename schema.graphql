@@ -2,13 +2,14 @@ type Query {
     usuario(id: ID!): Usuario
     usuarios: [Usuario] 
     receta(id: ID!): Receta
-    recetas(limit: Int): [Receta]
+    recetas(limit: Int): RecetaSubList
 }
 
 type Mutation {
     crearUsuario(input: CrearUsuarioInput!): Usuario
     actualizarUsuario(input: ActualizarUsuarioInput!): Usuario
     eliminarUsuario(id: ID!): Usuario
+    #receta
     crearReceta(input: CrearRecetaInput!): Receta
     actualizarReceta(input: ActualizarRecetaInput!): Receta
     eliminarReceta(id: ID!): Receta
@@ -24,15 +25,6 @@ type Usuario {
     password: String
 }
 
-type Receta {
-    id: ID!
-    nombre: String!
-    descripcion: String
-    ingredientes: [String]!
-    pasos: [String]!
-    usuario: Usuario!
-    creado_en: String!
-}
 
 input CrearUsuarioInput {
     name: String!
@@ -49,13 +41,40 @@ input ActualizarUsuarioInput {
     password: String
 }
 
-input CrearRecetaInput {
-    nombre: String!
+
+
+
+# receta
+
+
+type Receta {
+    id: ID!
+    nombre: String
     descripcion: String
-    ingredientes: [String]!
-    pasos: [String]!
-    usuario_id: ID!
+    ingredientes: String
+    pasos: String
+    usuario: Usuario!  
+    created_at: String!
 }
+
+
+type RecetaSubList{
+    items:[Receta]!
+}
+
+
+
+
+
+input CrearRecetaInput {
+    nombre: String
+    descripcion: String
+    ingredientes: String
+    pasos: String
+    id_usuario: String!
+}
+
+
 
 input ActualizarRecetaInput {
     id: ID!

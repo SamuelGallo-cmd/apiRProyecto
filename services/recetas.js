@@ -1,58 +1,55 @@
+// Importa la conexión a la base de datos desde el archivo connection.js
 import { connection } from "./connection.js";
+import { PubSub } from 'graphql-subscriptions';
 
-const recipeTable = () => connection.table('recetas');
+const RecetaTable=()=>connection.table('recetas');
 
-export async function obtenerRecetaPorId(id) {
-    const receta = await recipeTable().first().where({ id });
-    return {
-        ...receta,
-        ingredientes: JSON.parse(receta.ingredientes),
-        pasos: JSON.parse(receta.pasos)
-    };
+
+
+// Esta función obtiene todas las recetas, opcionalmente limitadas por cantidad
+export async function obtenerTodasLasRecetas(limit) {
+    let query = connection.table('recetas').select().orderBy('created_at', 'desc');
+    if (limit) {
+        query = query.limit(limit);
+    }
+    return query;
 }
 
-export async function obtenerTodasLasRecetas() {
-    const recetas = await recipeTable().select();
-    return recetas.map(receta => ({
-        ...receta,
-        ingredientes: JSON.parse(receta.ingredientes),
-        pasos: JSON.parse(receta.pasos)
-    }));
-}
 
-export async function crearReceta({ nombre, descripcion, ingredientes, pasos, usuario_id }) {
-    const receta = {
+
+export async function crearReceta({nombre, descripcion, ingredientes, pasos, id_usuario}){
+    const receta={
         nombre,
         descripcion,
-        ingredientes: JSON.stringify(ingredientes),
-        pasos: JSON.stringify(pasos),
-        id_usuario: usuario_id,
-        creado_en: new Date().toISOString(),
+        ingredientes,
+        pasos,
+        id_usuario,
+        created_at: new Date().toISOString(),
     };
-    const [id] = await recipeTable().insert(receta);
-    return obtenerRecetaPorId(id);
+    await RecetaTable().insert(receta);
+    return receta;
 }
 
+
+
+
+// Esta función actualiza una receta existente en la base de datos
 export async function actualizarReceta({ id, nombre, descripcion, ingredientes, pasos }) {
-    const receta = await obtenerRecetaPorId(id);
+    const receta = await connection.table('recetas').where({ id }).first();
     if (!receta) {
         return null;
     }
-    const camposActualizados = { 
-        nombre, 
-        descripcion,
-        ...(ingredientes && { ingredientes: JSON.stringify(ingredientes) }),
-        ...(pasos && { pasos: JSON.stringify(pasos) })
-    };
-    await recipeTable().update(camposActualizados).where({ id });
-    return { ...receta, ...camposActualizados };
+    const updateFields = { nombre, descripcion, ingredientes, pasos };
+    await connection.table('recetas').update(updateFields).where({ id });
+    return { ...receta, ...updateFields };
 }
 
+// Esta función elimina una receta existente de la base de datos
 export async function eliminarReceta(id) {
-    const receta = await obtenerRecetaPorId(id);
+    const receta = await connection.table('recetas').where({ id }).first();
     if (!receta) {
         return null;
     }
-    await recipeTable().delete().where({ id });
+    await connection.table('recetas').delete().where({ id });
     return receta;
 }
