@@ -14,7 +14,7 @@ type Mutation {
     actualizarReceta(input: ActualizarRecetaInput!): Receta
     eliminarReceta(id: ID!): Receta
 }
-
+        
 type Usuario {
     id: ID!
     name: String!
@@ -27,6 +27,7 @@ type Usuario {
 
 
 input CrearUsuarioInput {
+    id:ID!
     name: String!
     last_name: String
     email: String!
@@ -45,6 +46,15 @@ input ActualizarUsuarioInput {
 
 
 # receta
+
+input ActualizarRecetaInput {
+    id: ID!
+    nombre: String
+    descripcion: String
+    ingredientes: String
+    pasos: String
+}
+
 
 
 type Receta {
@@ -76,13 +86,7 @@ input CrearRecetaInput {
 
 
 
-input ActualizarRecetaInput {
-    id: ID!
-    nombre: String
-    descripcion: String
-    ingredientes: [String]
-    pasos: [String]
-}
+
 
 type Subscription {
     nuevaReceta: Receta
