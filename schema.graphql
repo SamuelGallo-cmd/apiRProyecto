@@ -1,65 +1,93 @@
 type Query {
     usuario(id: ID!): Usuario
+    usuarios: [Usuario] 
     receta(id: ID!): Receta
-    recetas(limit: Int): [Receta]
+    recetas(limit: Int): RecetaSubList
 }
 
 type Mutation {
     crearUsuario(input: CrearUsuarioInput!): Usuario
     actualizarUsuario(input: ActualizarUsuarioInput!): Usuario
     eliminarUsuario(id: ID!): Usuario
+    #receta
     crearReceta(input: CrearRecetaInput!): Receta
     actualizarReceta(input: ActualizarRecetaInput!): Receta
     eliminarReceta(id: ID!): Receta
 }
-
+        
 type Usuario {
     id: ID!
-    nombre: String!
-    apellido: String
-    correo: String!
-    recetas: [Receta]
-    creado_en: String!
+    name: String!
+    last_name: String
+    email: String!
+    recetas: [Receta]  #  recetas asociadas a un usuario
+    created_at: String!
+    password: String
 }
 
-type Receta {
-    id: ID!
-    titulo: String!
-    descripcion: String
-    ingredientes: [String]!
-    pasos: [String]!
-    usuario: Usuario!
-    creado_en: String!
-}
 
 input CrearUsuarioInput {
-    nombre: String!
-    apellido: String
-    correo: String!
+    id:ID!
+    name: String!
+    last_name: String
+    email: String!
+    password: String!
 }
 
 input ActualizarUsuarioInput {
     id: ID!
-    nombre: String
-    apellido: String
-    correo: String
+    name: String
+    last_name: String
+    email: String
+    password: String
 }
 
-input CrearRecetaInput {
-    titulo: String!
-    descripcion: String
-    ingredientes: [String]!
-    pasos: [String]!
-    usuario_id: ID!
-}
+
+
+
+# receta
 
 input ActualizarRecetaInput {
     id: ID!
-    titulo: String
+    nombre: String
     descripcion: String
-    ingredientes: [String]
-    pasos: [String]
+    ingredientes: String
+    pasos: String
 }
+
+
+
+type Receta {
+    id: ID!
+    nombre: String
+    descripcion: String
+    ingredientes: String
+    pasos: String
+    usuario: Usuario!  
+    created_at: String!
+}
+
+
+type RecetaSubList{
+    items:[Receta]!
+}
+
+
+
+
+
+input CrearRecetaInput {
+    nombre: String
+    descripcion: String
+    ingredientes: String
+    pasos: String
+    id_usuario: String!
+}
+
+
+
+
+
 type Subscription {
     nuevaReceta: Receta
 }
