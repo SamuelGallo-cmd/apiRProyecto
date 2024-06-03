@@ -24,6 +24,7 @@ await schema.createTable('recetas', (table) => {
     table.integer('id_usuario').notNullable().references('id').inTable('usuarios');
 });
 
+
 await connection.table('usuarios').insert([{
     name: 'Admin',
     last_name: 'Admin',

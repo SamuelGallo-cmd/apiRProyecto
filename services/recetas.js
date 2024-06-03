@@ -24,6 +24,7 @@ export async function crearReceta({ nombre, descripcion, ingredientes, pasos, id
 
 
 
+
 export async function actualizarReceta({ id, nombre, descripcion, ingredientes, pasos }) {
     const receta = await RecetaTable().first().where({ id });
     if (!receta) {
