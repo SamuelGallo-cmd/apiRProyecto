@@ -1,8 +1,6 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware as middleware } from "@apollo/server/express4";
 import express from 'express';
-import { ApolloServer } from '@apollo/server'; 
-import {expressMiddleware as middleware} from "@apollo/server/express4";
 import { authMiddleware, login } from './auth.js';
 import cors from 'cors';
 import { resolvers } from "./resolvers.js";
