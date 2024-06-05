@@ -1,7 +1,11 @@
 type Query {
     usuario(id: ID!): Usuario
+    usuarios: [Usuario]
+    Usuario:Usuario
     receta(id: ID!): Receta
-    recetas(limit: Int): [Receta]
+    recetas: [Receta]
+    categorias: [Categoria]
+
 }
 
 type Mutation {
@@ -11,55 +15,90 @@ type Mutation {
     crearReceta(input: CrearRecetaInput!): Receta
     actualizarReceta(input: ActualizarRecetaInput!): Receta
     eliminarReceta(id: ID!): Receta
+    crearCategoria(input: CrearCategoria!): Categoria
+    actualizarCategoria(input: ActualizarCategoria): Categoria
+    eliminarCategoria(id:ID!): Categoria
 }
 
 type Usuario {
     id: ID!
-    nombre: String!
-    apellido: String
-    correo: String!
+    name: String!
+    last_name: String
+    email: String!
+    password:String!
     recetas: [Receta]
-    creado_en: String!
-}
-
-type Receta {
-    id: ID!
-    titulo: String!
-    descripcion: String
-    ingredientes: [String]!
-    pasos: [String]!
-    usuario: Usuario!
-    creado_en: String!
+    created_at: String!
 }
 
 input CrearUsuarioInput {
-    nombre: String!
-    apellido: String
-    correo: String!
+    name: String!
+    last_name: String
+    email: String!
+    password: String!
 }
 
 input ActualizarUsuarioInput {
     id: ID!
-    nombre: String
-    apellido: String
-    correo: String
-}
-
-input CrearRecetaInput {
-    titulo: String!
-    descripcion: String
-    ingredientes: [String]!
-    pasos: [String]!
-    usuario_id: ID!
+    name: String
+    last_name: String
+    email: String
 }
 
 input ActualizarRecetaInput {
     id: ID!
+    nombre: String
+    descripcion: String
+    ingredientes: String
+    pasos: String
+    imagen: String
+}
+
+type Receta {
+    id: ID!
+    nombre: String
+    descripcion: String
+    ingredientes: String
+    pasos: String
+    categoria: [Categoria]
+    usuario: Usuario!  
+    imagen: String
+    created_at: String!
+}
+
+input CrearRecetaInput {
+    nombre: String
+    descripcion: String
+    ingredientes: String
+    pasos: String
+    categoria: String
+    id_usuario: String!
+    imagen: String
+}
+
+
+type Categoria{
+    id:ID!
+    titulo: String! 
+    descripcion: String! 
+    recetas: [Receta]
+    created_at: String!
+}
+
+input CrearCategoria{
+    titulo: String! 
+    descripcion: String! 
+    receta: String
+}
+
+input ActualizarCategoria{
+    id:ID!
     titulo: String
     descripcion: String
-    ingredientes: [String]
-    pasos: [String]
 }
+
 type Subscription {
     nuevaReceta: Receta
+    nuevoUsuario: Usuario
+    nuevaCategoria: Categoria
 }
+
