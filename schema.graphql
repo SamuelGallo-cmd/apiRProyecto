@@ -12,6 +12,7 @@ type Mutation {
     crearUsuario(input: CrearUsuarioInput!): Usuario
     actualizarUsuario(input: ActualizarUsuarioInput!): Usuario
     eliminarUsuario(id: ID!): Usuario
+    #receta
     crearReceta(input: CrearRecetaInput!): Receta
     actualizarReceta(input: ActualizarRecetaInput!): Receta
     eliminarReceta(id: ID!): Receta
@@ -19,7 +20,7 @@ type Mutation {
     actualizarCategoria(input: ActualizarCategoria): Categoria
     eliminarCategoria(id:ID!): Categoria
 }
-
+        
 type Usuario {
     id: ID!
     name: String!

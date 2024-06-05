@@ -21,6 +21,9 @@ export async function crearReceta({ nombre, descripcion, ingredientes, pasos,cat
     return insertedReceta; 
 }
 
+
+
+
 export async function actualizarReceta({ id, nombre, descripcion, ingredientes, pasos, categoria }) {
     const receta = await RecetaTable().first().where({ id });
     if (!receta) {
@@ -33,9 +36,11 @@ export async function actualizarReceta({ id, nombre, descripcion, ingredientes, 
 
 export async function eliminarReceta(id) {
     const receta = await connection.table('recetas').where({ id }).first();
+    const receta = await connection.table('recetas').where({ id }).first();
     if (!receta) {
         return null;
     }
+    await connection.table('recetas').delete().where({ id });
     await connection.table('recetas').delete().where({ id });
     return receta;
 }

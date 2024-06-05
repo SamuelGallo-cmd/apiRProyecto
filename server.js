@@ -1,3 +1,5 @@
+import { ApolloServer } from "@apollo/server";
+import { expressMiddleware as middleware } from "@apollo/server/express4";
 import express from 'express';
 import { ApolloServer } from '@apollo/server'; 
 import {expressMiddleware as middleware} from "@apollo/server/express4";
@@ -17,9 +19,8 @@ app.use(cors(),express.json(),authMiddleware);
 
 app.post('/login', login);
 
-const typeDefs = await readFile('./schema.graphql', 'utf8');
-
-const schema = makeExecutableSchema({ typeDefs, resolvers });
+    const typeDefs = await readFile('./schema.graphql', 'utf8');
+    const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 const server = new ApolloServer({ schema });
 
