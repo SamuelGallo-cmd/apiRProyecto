@@ -25,7 +25,7 @@ export const resolvers = {
     },
     Usuario: {
         recetas: async (user, {auth}) => {
-            //  obtener las recetas asociadas a un usuario
+        
             return await getRecetasByUsuarioId(user.id);
         },
         created_at:(receta)=> {
@@ -36,7 +36,7 @@ Receta: {
   usuario: async (receta) => {
     return await getUser(receta.id_usuario);
   },
-  categoriaR: async (receta) => { // Cambiado de "categoria" a "categoriaR"
+  categoriaR: async (receta) => { 
     return await getCategoria(receta.id_categoria);
   }
 }
