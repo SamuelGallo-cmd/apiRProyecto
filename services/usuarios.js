@@ -24,6 +24,15 @@ export async function createUser({id, name, last_name, email, password}) {
     return user;
 }
 
+
+
+
+
+
+
+
+
+
 export async function updateUser({ id, name, last_name, email }) {
     const user = await userTable().first().where({ id });
     if (!user) {
