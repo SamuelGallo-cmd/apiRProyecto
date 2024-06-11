@@ -1,7 +1,7 @@
 import { GraphQLError, subscribe } from "graphql";
 import { getUser, createUser, updateUser, deleteUser, getRecetasByUsuarioId, getAllUsers } from "./services/usuarios.js";
-import { obtenerTodasLasRecetas, crearReceta, actualizarReceta, eliminarReceta, obtenerRecetaPorCategoria } from "./services/recetas.js";
-import {getAllCategories, createCategory, updateCategory} from "./services/categorias.js"
+import { obtenerTodasLasRecetas, crearReceta, actualizarReceta, eliminarReceta} from "./services/recetas.js";
+import {getAllCategories, createCategory, updateCategory,getObtenerRecetasPorCategoria, getCategoria} from "./services/categorias.js"
 import { PubSub } from 'graphql-subscriptions';
 
 const pubSub = new PubSub();
@@ -25,21 +25,25 @@ export const resolvers = {
     },
     Usuario: {
         recetas: async (user, {auth}) => {
-            //  obtener las recetas asociadas a un usuario
+        
             return await getRecetasByUsuarioId(user.id);
         },
         created_at:(receta)=> {
             return receta.created_at.slice(0, 'yyyy-mm-dd'.length)
         }
     },
-    Receta: {
-        usuario: async (receta) => {
-            return await getUser(receta.id_usuario);
-        }
-    },
-    Categoria: {
-        recetas: async (categoria) => {
-            return await obtenerRecetaPorCategoria(categoria.id);
+Receta: {
+  usuario: async (receta) => {
+    return await getUser(receta.id_usuario);
+  },
+  categoriaR: async (receta) => { 
+    return await getCategoria(receta.id_categoria);
+  }
+}
+,
+    CategoriaR: {
+        recetas: async (categoriaR) => {
+            return await getobtenerRecetasPorCategoria(categoriaR.id);
         }
     },
 
@@ -71,15 +75,21 @@ export const resolvers = {
             }
             return user;
         },
-        //Recetas Mutations
-       crearReceta: async (_root, { input: { nombre, ingredientes, descripcion, pasos, id_usuario } }, { auth }) => {
+
+
+        crearReceta: async (_root, { input: { nombre, ingredientes, descripcion, imagen ,pasos, id_categoria, id_usuario } }, { auth }) => {
             if (!auth) {
                 throw new GraphQLError("Usuario no autenticado", { extensions: { code: 'UNAUTHORIZED' } });
             }
-            const receta = await crearReceta({ nombre, ingredientes, descripcion, pasos, id_usuario: auth.sub });
+            const receta = await crearReceta({ nombre, ingredientes, descripcion,imagen, pasos,id_categoria, id_usuario: auth.sub });
             pubSub.publish('RECETA_AGREGADA', { nuevaReceta: receta });
             return receta;
         },
+        
+
+
+
+
         actualizarReceta: async (_root, { input: { id, nombre, ingredientes, descripcion, pasos } }, { auth }) => {
             if (!auth) {
                 throw new GraphQLError("Usuario no autenticado", { extensions: { code: 'UNAUTHORIZED' } });
@@ -100,7 +110,7 @@ export const resolvers = {
             }
             return receta;
         },
-        // Categoria Mutations
+        // CategoriaR Mutations
         crearCategoria: async (_root, { input: { titulo, descripcion} }, { auth }) => {
             if (!auth) {
                 throw new GraphQLError("Usuario no autenticado", { extensions: { code: 'UNAUTHORIZED' } });
@@ -164,6 +174,4 @@ export const resolvers = {
             },
         }
     },
-    
-    
 };
