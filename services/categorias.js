@@ -1,6 +1,11 @@
 import { connection } from "./connection.js";
 
-const categoriaTable = () => connection.table('categorias');
+const categoriaTable = () => connection.table('categoriasR');
+const recetasTable = () => connection.table('recetas');
+
+export async function getCategoria(id) {
+    return await categoriaTable().first().where({ id });
+}
 
 export async function getAllCategories() {
     const query = categoriaTable().select().orderBy('titulo', 'desc');
@@ -14,7 +19,7 @@ export async function createCategory({ titulo, descripcion }) {
         created_at: new Date().toISOString(),
     };
     const [addedCategory] = await categoriaTable().insert(category).returning('*');
-    return addedCategory; 
+    return addedCategory;
 }
 
 export async function updateCategory({ id, titulo, descripcion }) {
@@ -28,10 +33,14 @@ export async function updateCategory({ id, titulo, descripcion }) {
 }
 
 export async function deleteCategory(id) {
-    const category = await categoriaTable().first().where({id});
+    const category = await categoriaTable().first().where({ id });
     if (!category) {
         return null;
     }
-    await categoriaTable().delete().where({id});
+    await categoriaTable().delete().where({ id });
     return category;
+}
+
+export async function getObtenerRecetasPorCategoria(categoriaId) {
+    return await recetasTable().where({ id_categoria: categoriaId });
 }

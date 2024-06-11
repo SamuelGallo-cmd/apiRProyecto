@@ -1,104 +1,103 @@
 type Query {
-    usuario(id: ID!): Usuario
-    usuarios: [Usuario]
-    Usuario:Usuario
-    receta(id: ID!): Receta
-    recetas: [Receta]
-    categorias: [Categoria]
-
+  usuario(id: ID!): Usuario
+  categoriaR(id: ID!): CategoriaR
+  receta(id: ID!): Receta
+  
+  usuarios: [Usuario]
+  recetas: [Receta]
+  categorias: [CategoriaR]
 }
 
 type Mutation {
-    crearUsuario(input: CrearUsuarioInput!): Usuario
-    actualizarUsuario(input: ActualizarUsuarioInput!): Usuario
-    eliminarUsuario(id: ID!): Usuario
-    crearReceta(input: CrearRecetaInput!): Receta
-    actualizarReceta(input: ActualizarRecetaInput!): Receta
-    eliminarReceta(id: ID!): Receta
-    crearCategoria(input: CrearCategoria!): Categoria
-    actualizarCategoria(input: ActualizarCategoria): Categoria
-    eliminarCategoria(id:ID!): Categoria
-}
+  crearUsuario(input: CrearUsuarioInput!): Usuario
+  actualizarUsuario(input: ActualizarUsuarioInput!): Usuario
+  eliminarUsuario(id: ID!): Usuario
 
-type Usuario {
-    id: ID!
-    name: String!
-    last_name: String
-    email: String!
-    password:String!
-    recetas: [Receta]
-    created_at: String!
+  crearCategoria(input: CrearCategoriaInput!): CategoriaR
+  crearReceta(input: CrearRecetaInput!): Receta
+
+  actualizarReceta(input: ActualizarRecetaInput!): Receta
+  eliminarReceta(id: ID!): Receta
+  actualizarCategoria(input: ActualizarCategoriaInput!): CategoriaR
+  eliminarCategoria(id: ID!): CategoriaR
 }
 
 input CrearUsuarioInput {
-    name: String!
-    last_name: String
-    email: String!
-    password: String!
+  name: String!
+  last_name: String
+  email: String!
+  password: String!
 }
 
 input ActualizarUsuarioInput {
-    id: ID!
-    name: String
-    last_name: String
-    email: String
+  id: ID!
+  name: String
+  last_name: String
+  email: String
 }
 
 input ActualizarRecetaInput {
-    id: ID!
-    nombre: String
-    descripcion: String
-    ingredientes: String
-    pasos: String
-    imagen: String
+  id: ID!
+  nombre: String
+  descripcion: String
+  ingredientes: String
+  pasos: String
+  imagen: String
 }
 
 type Receta {
-    id: ID!
-    nombre: String
-    descripcion: String
-    ingredientes: String
-    pasos: String
-    categoria: [Categoria]
-    usuario: Usuario!  
-    imagen: String
-    created_at: String!
+  id: ID!
+  nombre: String
+  descripcion: String
+  ingredientes: String
+  pasos: String
+  usuario: Usuario!
+  categoriaR: CategoriaR!
+  imagen: String
+  created_at: String!
 }
 
 input CrearRecetaInput {
-    nombre: String
-    descripcion: String
-    ingredientes: String
-    pasos: String
-    categoria: String
-    id_usuario: String!
-    imagen: String
+  nombre: String
+  descripcion: String
+  ingredientes: String
+  pasos: String
+  id_categoria: ID!
+  id_usuario: ID!
+  imagen: String
 }
 
-
-type Categoria{
-    id:ID!
-    titulo: String! 
-    descripcion: String! 
-    recetas: [Receta]
-    created_at: String!
+type Usuario {
+  id: ID!
+  name: String!
+  last_name: String
+  email: String!
+  password: String!
+  recetas: [Receta]
+  created_at: String!
 }
 
-input CrearCategoria{
-    titulo: String! 
-    descripcion: String! 
-    receta: String
+type CategoriaR {
+  id: ID!
+  titulo: String!
+  descripcion: String!
+  recetas: [Receta]
+  created_at: String!
 }
 
-input ActualizarCategoria{
-    id:ID!
-    titulo: String
-    descripcion: String
+input CrearCategoriaInput {
+  titulo: String!
+  descripcion: String!
+}
+
+input ActualizarCategoriaInput {
+  id: ID!
+  titulo: String
+  descripcion: String
 }
 
 type Subscription {
-    nuevaReceta: Receta
-    nuevoUsuario: Usuario
-    nuevaCategoria: Categoria
+  nuevaReceta: Receta
+  nuevoUsuario: Usuario
+  nuevaCategoria: CategoriaR
 }
-
