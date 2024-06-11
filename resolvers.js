@@ -45,8 +45,8 @@ export const resolvers = {
 
     Mutation: {
         //User Mutations
-        crearUsuario: async (_root, { input: {id,name, last_name, email, password} }) => {
-            const user = await createUser({id, name, last_name, email, password});
+        crearUsuario: async (_root, { input: {name, last_name, email, password} }) => {
+            const user = await createUser({name, last_name, email, password});
             pubSub.publish('USER_ADDED', {nuevoUsuario:user});
             return user;
         },

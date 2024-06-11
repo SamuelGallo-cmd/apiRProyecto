@@ -11,9 +11,8 @@ export async function getAllUsers() {
     return await userTable().select('id', 'name', 'last_name', 'email', 'created_at'); 
 }
 
-export async function createUser({id, name, last_name, email, password}) {
+export async function createUser({name, last_name, email, password}) {
     const user = {
-        id,
         name,
         last_name,
         email,
