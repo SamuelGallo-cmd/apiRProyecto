@@ -77,6 +77,7 @@ await connection.table('recetas').insert([{
     descripcion: 'Un delicioso arroz tradicional',
     ingredientes: 'huevo, arroz, matequilla',
     pasos: 'asdfsdfasdasafsfasdfasdf',
+    imagen:'https://th.bing.com/th/id/R.1efaed21659ae63e6674e0b351c70aa0?rik=1VEMXUXCXcxHKw&pid=ImgRaw&r=0',
     created_at: new Date().toISOString(),
     id_usuario: '1',
     id_categoria: '1'
