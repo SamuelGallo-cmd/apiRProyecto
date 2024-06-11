@@ -77,11 +77,11 @@ Receta: {
         },
 
 
-        crearReceta: async (_root, { input: { nombre, ingredientes, descripcion, pasos, id_categoria, id_usuario } }, { auth }) => {
+        crearReceta: async (_root, { input: { nombre, ingredientes, descripcion, imagen ,pasos, id_categoria, id_usuario } }, { auth }) => {
             if (!auth) {
                 throw new GraphQLError("Usuario no autenticado", { extensions: { code: 'UNAUTHORIZED' } });
             }
-            const receta = await crearReceta({ nombre, ingredientes, descripcion, pasos,id_categoria, id_usuario: auth.sub });
+            const receta = await crearReceta({ nombre, ingredientes, descripcion,imagen, pasos,id_categoria, id_usuario: auth.sub });
             pubSub.publish('RECETA_AGREGADA', { nuevaReceta: receta });
             return receta;
         },

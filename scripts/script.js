@@ -1,11 +1,11 @@
 import { connection } from "../services/connection.js";
 
 const { schema } = connection;
-
-await schema.dropTableIfExists('usuarios');
 await schema.dropTableIfExists('recetas');
 await schema.dropTableIfExists('categoriasR');
 await schema.dropTableIfExists('categorias');
+await schema.dropTableIfExists('usuarios');
+
 
 
 
@@ -57,6 +57,11 @@ await connection.table('usuarios').insert([{
     created_at: new Date().toISOString(),
 }]);
 
+await connection.table('categoriasR').insert([{
+    titulo: 'Tipica',
+    descripcion: 'Comida de Costa Rica',
+    created_at: new Date().toISOString(),
+}]);
 
 
 
@@ -72,6 +77,7 @@ await connection.table('recetas').insert([{
     descripcion: 'Un delicioso arroz tradicional',
     ingredientes: 'huevo, arroz, matequilla',
     pasos: 'asdfsdfasdasafsfasdfasdf',
+    imagen:'https://th.bing.com/th/id/R.1efaed21659ae63e6674e0b351c70aa0?rik=1VEMXUXCXcxHKw&pid=ImgRaw&r=0',
     created_at: new Date().toISOString(),
     id_usuario: '1',
     id_categoria: '1'
