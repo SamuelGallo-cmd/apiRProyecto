@@ -7,12 +7,13 @@ export async function obtenerTodasLasRecetas() {
     return query;
 }
 
-export async function crearReceta({ nombre, descripcion, ingredientes, pasos, id_categoria, id_usuario }) {
+export async function crearReceta({ nombre, descripcion, ingredientes, pasos,imagen, id_categoria, id_usuario }) {
     const receta = {
         nombre,
         descripcion,
         ingredientes,
         pasos,
+        imagen,
         id_categoria,
         id_usuario,
         created_at: new Date().toISOString(),
